@@ -7,9 +7,9 @@ Note: if you testing in BTP trial only a single node kyma cluster is used, so yo
 
 Useful links:  
 
-[SAP BTP Kyma Runtime -- Kubernetes service](https://discovery-center.cloud.sap/serviceCatalog/kyma-runtime?region=all)
-[Kyma opensource docs](https://kyma-project.io/)
-[Kubernetes Persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+[SAP BTP Kyma Runtime -- Kubernetes service](https://discovery-center.cloud.sap/serviceCatalog/kyma-runtime?region=all) 
+[Kyma opensource docs](https://kyma-project.io/) 
+[Kubernetes Persistent volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) 
 
 
 ## Deploy steps 
