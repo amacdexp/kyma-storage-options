@@ -15,7 +15,51 @@ Useful links:
 
 
 
-## Deploy steps 
+WIP
+
+
+## local test of filebrowser 
+(https://filebrowser.org/installation) 
+
 ```
+
+export FB_PATH="<LOCATION OF gitclone>/kyma-storage-options"
+mkdir $FB_PATH/srv
+
+echo ''' 
+{
+  "port": 80,
+  "baseURL": "",
+  "address": "",
+  "log": "stdout",
+  "database": "/database.db",
+  "root": "/srv"
+}
+''' > .filebrowser.json
+
+
+touch filebrowser.db
+
+
+docker run \
+    -v $FB_PATH/srv:/srv \
+    -v $FB_PATH/filebrowser.db:/database.db \
+    -v $FB_PATH/.filebrowser.json:/.filebrowser.json \
+    --user $(id -u):$(id -g) \
+    -p 80:80 \
+    filebrowser/filebrowser
+
+
+```
+
+
+## Deploy steps on Kyma
+```
+kubectl apply -n dev -f storage-configmap.yml
+kubectl apply -n dev -f storage-local.yml
+kubectl apply -n dev -f storage-aws-ebs.yml
+kubectl apply -n dev -f storage-aws-ebs-csi.yml
+
+kubectl apply -n dev -f deployment-fb.yml
 
 ```
