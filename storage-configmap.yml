@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storage-configmap
+  namespace: dev
+data:
+  test1.txt: |
+    aaa=AAA
+    bbb=BBB
+  test2.csv: |
+    aaa,1
+    bbb,2
+ 

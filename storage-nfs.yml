@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pvc
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    #- ReadWriteMany
+    - ReadWriteOnce
+  #nfs:
+  #   path: <insert/path/to/share>
+  #   server: <insert_nfs_server_ip_or_name>
+  nfs:
+    server: nfs-server.default.svc.cluster.local
+    path: "/"
+  mountOptions:
+    - nfsvers=4.2
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-pvc
+spec:
+  storageClassName: local-storage-12-209
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi

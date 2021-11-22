@@ -1,0 +1,117 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: filebrowser
+  labels:
+    app: filebrowser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: filebrowser
+  template:
+    metadata:
+      labels:
+        app: filebrowser
+        version: v1
+    spec:
+      containers:
+        - name: filebrowser
+          image: filebrowser/filebrowser
+          #imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
+          #imagePullPolicy: Never
+          #command: ["/bin/sh", "-c"]
+          #args: 
+          #  - >-
+          #      echo "Add user 'jupyter/Welcome01'" &&
+          # 
+          ports:
+            - name: http
+              containerPort: 80
+          volumeMounts:
+          - name: cache-volume
+            mountPath: /srv/cache-volume
+          - name: storage-cm-volume
+            mountPath: /srv/storage-configmap
+          - name: host-volume
+            mountPath: /srv/host-volume
+          - name: local-volume-12-209
+            mountPath: /srv/local-volume-12-209
+          - name: aws-ebs-volume
+            mountPath: /srv/aws-ebs-volume
+          - name: aws-ebs-csi-volume
+            mountPath: /srv/aws-ebs-csi-volume
+          #env:
+          #- name: GRANT_SUDO
+          #  value: "yes"
+          securityContext:
+            runAsUser: 0
+          resources:
+            limits:
+              memory: 4000Mi
+            requests:
+              memory: 3200Mi
+      #securityContext:
+      #  fsGroup: 100
+      volumes:
+      - name: cache-volume
+        emptyDir: {}   
+      - name: storage-cm-volume
+        configMap:
+          name: storage-configmap
+          #items:
+          #  - key: log_level
+          #    path: log_level
+      - name: host-volume
+        hostPath:
+          # directory location on host
+          path: /tmp/filebrowser-data
+          # this field is optional
+          type: DirectoryOrCreate
+      - name: local-volume-12-209
+        persistentVolumeClaim:
+          claimName: local-pvc-12-209
+      - name: aws-ebs-volume
+        persistentVolumeClaim:
+          claimName: aws-ebs-pvc
+      - name: aws-ebs-csi-volume
+        persistentVolumeClaim:
+          claimName: aws-ebs-csi-pvc
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: filebrowser
+  labels:
+    app: filebrowser
+spec:
+  #clusterIP: None
+  ports:
+  - name: http
+    targetPort: 80
+    protocol: TCP
+    port: 80
+  selector:
+    app: filebrowser
+---
+apiVersion: gateway.kyma-project.io/v1alpha1
+kind: APIRule
+metadata:
+  name: filebrowser
+spec:
+  gateway: kyma-gateway.kyma-system.svc.cluster.local
+  rules:
+  - accessStrategies:
+    - config: {}
+      handler: allow
+    methods:
+    - GET
+    path: /.*
+  service:
+    #host: filebrowser.<cluster>.kyma.shoot.live.k8s-hana.ondemand.com
+    host: filebrowser.rxtwtg5w0k.testkyma.shoot.canary.k8s-hana.ondemand.com
+    name: filebrowser
+    port: 80
