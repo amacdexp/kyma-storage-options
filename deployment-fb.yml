@@ -43,6 +43,10 @@ spec:
             mountPath: /srv/aws-ebs-volume
           - name: aws-ebs-csi-volume
             mountPath: /srv/aws-ebs-csi-volume
+          - name: default-pvc-volume
+            mountPath: /srv/default-pvc-volume
+          - name: nfs-volume
+            mountPath: /srv/nfs-volume
           #env:
           #- name: GRANT_SUDO
           #  value: "yes"
@@ -79,6 +83,12 @@ spec:
       - name: aws-ebs-csi-volume
         persistentVolumeClaim:
           claimName: aws-ebs-csi-pvc
+      - name: default-pvc-volume
+        persistentVolumeClaim:
+          claimName: default-pvc
+      - name: nfs-volume
+        persistentVolumeClaim:
+          claimName: nfs-pvc
       restartPolicy: Always
 ---
 apiVersion: v1

@@ -1,0 +1,29 @@
+#https://kubernetes.io/docs/concepts/storage/storage-classes/#aws-ebs
+#https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html
+#https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volumes-multi.html
+#https://github.com/kubernetes-sigs/aws-ebs-csi-driver/issues/449
+#https://github.com/opelr/aws-ebs-csi-driver/pull/1/commits/e7ee7bbdd6617551e430921e70a817ca856ffb1f
+
+#https://github.com/kubernetes-sigs/aws-ebs-csi-driver
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: aws-ebs-csi-multi-sc
+provisioner: ebs.csi.aws.com
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  type: "io2"
+  multiattachenabled: "true"
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aws-ebs-csi-multi-pvc
+spec:
+  storageClassName: aws-ebs-csi-multi-sc
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi

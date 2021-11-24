@@ -1,18 +1,28 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: kyma-nfs-sc
+provisioner: kubernetes.io/fake-nfs
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-pvc
+  name: nfs-pv
 spec:
+  storageClassName: kyma-nfs-sc
   capacity:
     storage: 1Gi
   accessModes:
-    #- ReadWriteMany
-    - ReadWriteOnce
+    - ReadWriteMany
+    #- ReadWriteOnce
   #nfs:
   #   path: <insert/path/to/share>
   #   server: <insert_nfs_server_ip_or_name>
   nfs:
-    server: nfs-server.default.svc.cluster.local
+    #server: nfs-server.dev.svc.cluster.local
+    #server: nfs-server.default.svc.cluster.local
+    #on AWS  clusterip seems to work
+    server: 100.70.87.144
     path: "/"
   mountOptions:
     - nfsvers=4.2
@@ -22,9 +32,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: nfs-pvc
 spec:
-  storageClassName: local-storage-12-209
+  #storageClassName: ""
+  storageClassName: kyma-nfs-sc
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
-      storage: 500Mi
+      storage: 1Gi

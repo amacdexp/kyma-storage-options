@@ -1,0 +1,70 @@
+#https://github.com/kubernetes/examples/blob/master/staging/volumes/nfs/nfs-server-rc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: default-nfs-pvc
+  #labels:
+  #  demo: nfs-pv-provisioning
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  resources:
+    requests:
+      storage: 10Gi
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nfs-server
+spec:
+  replicas: 1
+  selector:
+    role: nfs-server
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        role: nfs-server
+    spec:
+      containers:
+      - name: nfs-server
+        image: k8s.gcr.io/volume-nfs:0.8
+        #image: alphayax/docker-volume-nfs:latest
+        imagePullPolicy: Always
+        ports:
+        - name: nfs
+          containerPort: 2049
+        - name: mountd
+          containerPort: 20048
+        - name: rpcbind
+          containerPort: 111
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: default-nfs-volume
+          mountPath: /exports
+        #- name: nfs-server-conf
+        #  mountPath: /etc/exports.d/
+      volumes:
+      - name: default-nfs-volume
+        persistentVolumeClaim:
+            claimName: default-nfs-pvc
+      #- name: nfs-server-conf
+      #  configMap:
+      #    name: nfs-server-conf
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nfs-server
+spec:
+  type: LoadBalancer
+  ports:
+    - name: nfs
+      port: 2049
+    - name: mountd
+      port: 20048
+    - name: rpcbind
+      port: 111
+  selector:
+    role: nfs-server

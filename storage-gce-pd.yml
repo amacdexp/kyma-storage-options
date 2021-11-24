@@ -1,0 +1,20 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: gce-pd-sc
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-standard
+# type: pd-ssd
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: gce-pd-pvc
+spec:
+  storageClassName: gce-pd
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
