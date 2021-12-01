@@ -2,7 +2,7 @@
 
 Testing various storage (persistence options) for SAP BTP Kyma Runtime (kubernetes service offering) 
 
-![alt text](https://github.com/amacdexp/kyma-storage-options/srv/main/filebrowser_on_Kyma.png?raw=true)
+![alt text](https://github.com/amacdexp/kyma-storage-options/blob/main/srv/filebrowser_on_Kyma.png?raw=true)
 
 Note: If testing in BTP trial only a single node kyma cluster is used, so you may be exposed to issues with local node storage.
 Note2: Currently creation of PV and Storage Classes is restricted on BTP Kyma Service.
