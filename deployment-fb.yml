@@ -37,8 +37,8 @@ spec:
             mountPath: /srv/storage-configmap
           - name: host-volume
             mountPath: /srv/host-volume
-          - name: local-volume-12-209
-            mountPath: /srv/local-volume-12-209
+          - name: local-volume
+            mountPath: /srv/local-volume-node-13-205
           - name: aws-ebs-volume
             mountPath: /srv/aws-ebs-volume
           - name: aws-ebs-csi-volume
@@ -47,6 +47,8 @@ spec:
             mountPath: /srv/default-pvc-volume
           - name: nfs-volume
             mountPath: /srv/nfs-volume
+          - name: nfs-s3-volume
+            mountPath: /srv/nfs-s3-volume
           #env:
           #- name: GRANT_SUDO
           #  value: "yes"
@@ -74,9 +76,9 @@ spec:
           path: /tmp/filebrowser-data
           # this field is optional
           type: DirectoryOrCreate
-      - name: local-volume-12-209
+      - name: local-volume
         persistentVolumeClaim:
-          claimName: local-pvc-12-209
+          claimName: local-pvc
       - name: aws-ebs-volume
         persistentVolumeClaim:
           claimName: aws-ebs-pvc
@@ -89,6 +91,9 @@ spec:
       - name: nfs-volume
         persistentVolumeClaim:
           claimName: nfs-pvc
+      - name: nfs-s3-volume
+        persistentVolumeClaim:
+          claimName: nfs-s3-pvc
       restartPolicy: Always
 ---
 apiVersion: v1
@@ -122,6 +127,6 @@ spec:
     path: /.*
   service:
     #host: filebrowser.<cluster>.kyma.shoot.live.k8s-hana.ondemand.com
-    host: filebrowser.rxtwtg5w0k.testkyma.shoot.canary.k8s-hana.ondemand.com
+    host: filebrowser.t0zvj7xuix.testkyma.shoot.canary.k8s-hana.ondemand.com
     name: filebrowser
     port: 80

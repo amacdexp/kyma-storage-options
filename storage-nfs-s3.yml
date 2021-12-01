@@ -1,25 +1,28 @@
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: kyma-nfs-sc
+  name: kyma-nfs-s3-sc
 provisioner: kubernetes.io/fake-nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-pv
+  name: nfs-s3-pv
 spec:
-  storageClassName: kyma-nfs-sc
+  storageClassName: kyma-nfs-s3-sc
   capacity:
     storage: 1Gi
   accessModes:
     - ReadWriteMany
     #- ReadWriteOnce
+  #nfs:
+  #   path: <insert/path/to/share>
+  #   server: <insert_nfs_server_ip_or_name>
   nfs:
     #server: nfs-server.dev.svc.cluster.local
     #server: nfs-server.default.svc.cluster.local
     #on AWS  clusterip seems to work
-    server: 100.65.211.136
+    server: 100.66.173.215
     path: "/"
   mountOptions:
     - nfsvers=4.2
@@ -27,12 +30,12 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-pvc
+  name: nfs-s3-pvc
   #finailzer specification seemed to be needed to help deleting pvc
   finalizers: null
 spec:
   #storageClassName: ""
-  storageClassName: kyma-nfs-sc
+  storageClassName: kyma-nfs-s3-sc
   accessModes:
     - ReadWriteMany
   resources:

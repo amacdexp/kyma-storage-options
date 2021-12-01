@@ -6,21 +6,23 @@ metadata:
   name: aws-efs-sc
 provisioner: efs.csi.aws.com
 ---
-#apiVersion: v1
-#kind: PersistentVolume
-#metadata:
-#  name: aws-efs-pv
-#spec:
-#  storageClassName: aws-efs-sc
-#  persistentVolumeReclaimPolicy: Retain
-#  capacity:
-#    storage: 10Gi # Doesn't really matter, as EFS does not enforce it anyway
-#  volumeMode: Filesystem
-#  accessModes:
-#    - ReadWriteMany
-#  csi:
-#    driver: efs.csi.aws.com
-#    volumeHandle: ###fs-642da695   ## don't know with BTP Kyma service
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-efs-pv
+spec:
+  storageClassName: aws-efs-sc
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 10Gi # Doesn't really matter, as EFS does not enforce it anyway
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  csi:
+    driver: efs.csi.aws.com
+    volumeHandle: fs-07d4da06ca18b0d6f 
+    #AttachVolume.Attach failed for volume "aws-efs-pv" : attachdetachment timeout for volume fs-07d4da06ca18b0d6f
+                  ###fs-642da695   ## don't know with BTP Kyma service
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
