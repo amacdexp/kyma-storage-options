@@ -76,6 +76,11 @@ kubectl apply -n dev -f nfs-s3-server.yml
 
 ## update cluster ip address of the servers in the following yaml
 kubectl apply -n dev -f storage-nfs.yml
+
+kubectl -n dev create secret generic aws-s3 \
+  --from-literal=AWS_KEY='your AWS key' \
+  --from-literal=AWS_SECRET_KEY='your AWS secret'
+#update storage-nfs-s3.yml  with your AWS region / bucket
 kubectl apply -n dev -f storage-nfs-s3.yml
 
 

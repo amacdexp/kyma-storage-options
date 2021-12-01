@@ -13,8 +13,8 @@ spec:
       #claimName: aws-ebs-csi-multi-pvc #issue: new sc doesn't support MULTI_NODE_MULTI_WRITER
       #claimName: aws-ebs-multi-pvc     #issue: new sc doesn't support MULTI_NODE_MULTI_WRITER
       #claimName: aws-efs-multi-pvc     #issue: no AWS EFS
-      claimName: nfs-pvc
-      #claimName: nfs-s3-pvc
+      #claimName: nfs-pvc
+      claimName: nfs-s3-pvc
   containers:
   - image: busybox
     command:
