@@ -1,6 +1,6 @@
 # Test storage options on Kyma Service
 
-Testing various storage (persistence options) for SAP BTP Kyma Runtime (kubernetes service offering) 
+Testing various storage (persistence options) for Kyma and SAP BTP Kyma Runtime (kubernetes service offering) 
 
 ![alt text](https://github.com/amacdexp/kyma-storage-options/blob/main/srv/filebrowser_on_Kyma.png?raw=true)
 
@@ -99,5 +99,34 @@ kubectl apply -n dev -f deployment-fb.yml
 
 kubectl -n dev describe pod $(kubectl -n dev get pods -l app=filebrowser --field-selector=status.phase=Pending -o jsonpath="{.items[0].metadata.name}")
 
+
+```
+
+## Deploy filebrowser on BTP Kyma Runtime demonstrating current storage options
+```
+#Basic storage
+kubectl apply -n dev -f storage-configmap.yml
+kubectl apply -n dev -f storage-default-pvc.yml
+
+
+
+
+
+#NFS (2 Servers on Kubernetes: 1 Normal with PVC , 1 with S3 mount)
+kubectl apply -n dev -f nfs-server.yml
+
+kubectl -n dev create secret generic aws-s3 \
+  --from-literal=AWS_KEY='your AWS key' \
+  --from-literal=AWS_SECRET_KEY='your AWS secret'
+## update the nfs-server-s3.yml  with your AWS region / bucket
+kubectl apply -n dev -f nfs-s3-server.yml
+
+
+#filebrowser with pvc's mounted 
+#Update APIRule host  with appropriate <cluster> id 
+#OPT: update local volume mount path with node suffix
+kubectl apply -n dev -f deployment-fb-btp.yml
+
+kubectl -n dev describe pod $(kubectl -n dev get pods -l app=filebrowser --field-selector=status.phase=Pending -o jsonpath="{.items[0].metadata.name}")
 
 ```
