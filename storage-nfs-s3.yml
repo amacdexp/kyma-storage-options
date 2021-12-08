@@ -22,7 +22,7 @@ spec:
     #server: nfs-server.dev.svc.cluster.local
     #server: nfs-server.default.svc.cluster.local
     #on AWS  clusterip seems to work
-    server: 100.66.173.215
+    server: 100.66.238.178
     path: "/"
   mountOptions:
     - nfsvers=4.2

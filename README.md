@@ -70,7 +70,7 @@ kubectl apply -n dev -f storage-default-pvc.yml
 kubectl apply -n dev -f storage-aws-ebs.yml
 kubectl apply -n dev -f storage-aws-ebs-csi.yml
 
-#NFS (on Kubernetes with S3 support)
+#NFS (2 Servers on Kubernetes: 1 Normal with PVC , 1 with S3 mount)
 kubectl apply -n dev -f nfs-server.yml
 
 kubectl -n dev create secret generic aws-s3 \
@@ -92,7 +92,9 @@ kubectl exec -n dev --stdin --tty busybox -- /bin/sh
 kubectl delete -n dev pod busybox --force
 
 
-#filebrowser with pvc's mounted
+#filebrowser with pvc's mounted 
+#Update APIRule host  with appropriate <cluster> id 
+#OPT: update local volume mount path with node suffix
 kubectl apply -n dev -f deployment-fb.yml
 
 kubectl -n dev describe pod $(kubectl -n dev get pods -l app=filebrowser --field-selector=status.phase=Pending -o jsonpath="{.items[0].metadata.name}")
