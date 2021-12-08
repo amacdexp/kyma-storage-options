@@ -8,11 +8,11 @@ Note: If testing in BTP trial only a single node kyma cluster is used, so you ma
 Note2: Currently creation of PV and Storage Classes is restricted on BTP Kyma Runtime.
 
 
-## Kyma Service
+## filebrowser running on Kyma Service
 ![alt text](https://github.com/amacdexp/kyma-storage-options/blob/main/srv/filebrowser_on_Kyma.png?raw=true)
 
 
-## BTP Kyma Runtime Service
+## filebrowser running on SAP BTP Kyma Runtime Service
 ![alt text](https://github.com/amacdexp/kyma-storage-options/blob/main/srv/filebrowser_on_BTP_Kyma_Runtime.png?raw=true)
 
 
@@ -69,7 +69,7 @@ docker run \
 ```
 
 
-## Deploy filebrowser on Kyma demonstrating various storage options
+## Deploy filebrowser on Kyma, demonstrating various storage options
 ```
 #Basic storage
 kubectl apply -n dev -f storage-configmap.yml
@@ -112,7 +112,7 @@ kubectl -n dev describe pod $(kubectl -n dev get pods -l app=filebrowser --field
 
 ```
 
-## Deploy filebrowser on BTP Kyma Runtime demonstrating current storage options
+## Deploy filebrowser on SAP BTP Kyma Runtime, demonstrating current storage options
 ```
 #Basic storage
 kubectl apply -n dev -f storage-configmap.yml
